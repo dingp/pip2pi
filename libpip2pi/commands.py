@@ -60,8 +60,10 @@ if pip_version:
         pip_download_command = 'install --download'
         pip_no_binary_command = '--no-use-wheel'
 
+
 class PipError(Exception):
     pass
+
 
 def warn_wheel():
     print(
@@ -83,8 +85,10 @@ def warn_wheel():
             "    pip install -U setuptools"
         )
 
+
 def dedent(text):
     return textwrap.dedent(text.lstrip("\n")).rstrip()
+
 
 def maintain_cwd(f):
     @functools.wraps(f)
@@ -96,19 +100,22 @@ def maintain_cwd(f):
             os.chdir(orig_dir)
     return maintain_cwd_helper
 
+
 class InvalidFilePackageName(ValueError):
     def __init__(self, file, basedir=None):
-        msg = "unexpected file name: %r " %(file, )
+        msg = "unexpected file name: %r " % (file, )
         msg += "(not in 'pkg-name-version.xxx' format"
         if basedir:
-            msg += "; found in directory: %r" %(basedir)
+            msg += "; found in directory: %r" % (basedir)
         msg += ")"
         super(InvalidFilePackageName, self).__init__(msg)
+
 
 def egg_to_package(file):
     warnings.warn("egg_to_package is deprecated; use file_to_package.",
                   stacklevel=1)
     return file_to_package(file)
+
 
 def file_to_package(file, basedir=None):
     """ Returns the package name for a given file, or raises an
@@ -180,7 +187,7 @@ def pip_run_command(pip_args):
 
     if pip_version < (1, 1):
         raise RuntimeError("pip >= 1.1 required, but %s is installed"
-                           %(pip_version, ))
+                           % (pip_version, ))
     # TODO: Remove this once
     # pip._internal.req.req_tracker.RequirementTracker.cleanup() does it
     # already.
@@ -342,7 +349,7 @@ def _dir2pi(option, argv):
 
     shutil.rmtree(pkgdirpath("simple"), ignore_errors=True)
     os.mkdir(pkgdirpath("simple"))
-    pkg_index = ("<html><head><title>Simple Index</title>"
+    pkg_index = ("<!DOCTYPE html>t <html><head><title>Simple Index</title>"
                  "<meta name='api-version' value='2' /></head><body>\n")
 
     processed_pkg = set()
@@ -364,7 +371,8 @@ def _dir2pi(option, argv):
             os.mkdir(pkg_dir)
 
         if option.aggressive_normalization:
-            try_symlink(option, pkg_dir_name, pkgdirpath("simple", normalize_pip67(pkg_name)))
+            try_symlink(option, pkg_dir_name, pkgdirpath(
+                "simple", normalize_pip67(pkg_name)))
             try_symlink(option, pkg_dir_name, pkgdirpath("simple", pkg_name))
 
         symlink_target = os.path.join(pkg_dir, pkg_basename)
@@ -377,7 +385,7 @@ def _dir2pi(option, argv):
             shutil.copy2(pkg_filepath, symlink_target)
 
         if pkg_name not in processed_pkg:
-            pkg_index += "<a href='%s/'>%s</a><br />\n" %(
+            pkg_index += "<a href='%s/'>%s</a><br />\n" % (
                 escape(pkg_dir_name),
                 escape(pkg_name),
             )
@@ -385,7 +393,8 @@ def _dir2pi(option, argv):
 
         if option.build_html:
             with open(os.path.join(pkg_dir, "index.html"), "a") as fp:
-                fp.write("<a href='%(name)s'>%(name)s</a><br />\n" %{
+                fp.write("<!DOCTYPE html><html><head><title>'%s'</title></head>") % (escape(pkg_name))
+                fp.write("<body> <a href='%(name)s'>%(name)s</a><br /><body></html>\n" %{
                     "name": escape(pkg_basename),
                 })
     pkg_index += "</body></html>\n"
