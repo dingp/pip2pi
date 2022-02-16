@@ -103,10 +103,10 @@ def maintain_cwd(f):
 
 class InvalidFilePackageName(ValueError):
     def __init__(self, file, basedir=None):
-        msg = "unexpected file name: %r " % (file, )
+        msg = "unexpected file name: %r " %(file, )
         msg += "(not in 'pkg-name-version.xxx' format"
         if basedir:
-            msg += "; found in directory: %r" % (basedir)
+            msg += "; found in directory: %r" %(basedir)
         msg += ")"
         super(InvalidFilePackageName, self).__init__(msg)
 
@@ -187,7 +187,7 @@ def pip_run_command(pip_args):
 
     if pip_version < (1, 1):
         raise RuntimeError("pip >= 1.1 required, but %s is installed"
-                           % (pip_version, ))
+                           %(pip_version, ))
     # TODO: Remove this once
     # pip._internal.req.req_tracker.RequirementTracker.cleanup() does it
     # already.
@@ -381,11 +381,11 @@ def _dir2pi(option, argv):
             try_symlink(option, symlink_source, symlink_target)
         else:
             if option.verbose:
-                print('copying %s to %s' % (symlink_target, pkg_filepath))
+                print('copying %s to %s' %(symlink_target, pkg_filepath))
             shutil.copy2(pkg_filepath, symlink_target)
 
         if pkg_name not in processed_pkg:
-            pkg_index += "<a href='%s/'>%s</a><br />\n" % (
+            pkg_index += "<a href='%s/'>%s</a><br />\n" %(
                 escape(pkg_dir_name),
                 escape(pkg_name),
             )
@@ -393,7 +393,7 @@ def _dir2pi(option, argv):
 
         if option.build_html:
             with open(os.path.join(pkg_dir, "index.html"), "a") as fp:
-                fp.write("<!DOCTYPE html><html><head><title>'%s'</title></head>") % (escape(pkg_name))
+                fp.write("<!DOCTYPE html><html><head><title>'%s'</title></head>") %(escape(pkg_name))
                 fp.write("<body> <a href='%(name)s'>%(name)s</a><br /><body></html>\n" %{
                     "name": escape(pkg_basename),
                 })
@@ -431,7 +431,7 @@ def pip2tgz(argv=sys.argv):
                     %s \\
                     --index-url https://example.com/simple \\
                     bar==3.1
-        """ % (pip_download_command, pip_no_binary_command)))
+        """ %(pip_download_command, pip_no_binary_command)))
 
     option, argv = parser.parse_args(argv)
     if len(argv) < 3:
@@ -545,7 +545,7 @@ def pip2pi(argv=sys.argv):
                     -r requirements-dev.txt \\
                     bar==3.1
 
-        """ % (pip_download_command, pip_no_binary_command, pip_no_binary_command)))
+        """ %(pip_download_command, pip_no_binary_command, pip_no_binary_command)))
     parser.add_index_options()
 
     option, argv = parser.parse_args(argv)
