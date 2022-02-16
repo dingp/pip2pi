@@ -349,7 +349,7 @@ def _dir2pi(option, argv):
 
     shutil.rmtree(pkgdirpath("simple"), ignore_errors=True)
     os.mkdir(pkgdirpath("simple"))
-    pkg_index = ("<!DOCTYPE html>t <html><head><title>Simple Index</title>"
+    pkg_index = ("<!DOCTYPE html><html><head><title>Simple Index</title>"
                  "<meta name='api-version' value='2' /></head><body>\n")
 
     processed_pkg = set()
