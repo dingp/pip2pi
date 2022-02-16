@@ -393,7 +393,7 @@ def _dir2pi(option, argv):
 
         if option.build_html:
             with open(os.path.join(pkg_dir, "index.html"), "a") as fp:
-                fp.write("<!DOCTYPE html><html><head><title>'%s'</title></head>") %(escape(pkg_name))
+                fp.write("<!DOCTYPE html><html><head><title>'%s'</title></head>" %(escape(pkg_name)))
                 fp.write("<body> <a href='%(name)s'>%(name)s</a><br /><body></html>\n" %{
                     "name": escape(pkg_basename),
                 })
