@@ -397,15 +397,31 @@ def _dir2pi(option, argv):
                     "name": escape(pkg_basename),
                 })
 
-    for pkg in os.listdir(pkgdir+'/simple'):
-        with open(os.path.join(pkg, "index.html"), "r+") as fp:
-            fp_content = fp.read()
-            fp.seek(0, 0)
-            fp_line = "<!DOCTYPE html><html><head><title>'%s'</title></head>\n" %(escape(pkg_name))
-            fp.write(fp_line + fp_content)
+    processed_pkg = set()
+    for file in os.listdir(pkgdir):
+        pkg_filepath = os.path.join(pkgdir, file)
+        if not os.path.isfile(pkg_filepath):
+            continue
+        pkg_basename = os.path.basename(file)
+        if pkg_basename.startswith("."):
+            continue
+        pkg_name, pkg_rest = file_to_package(pkg_basename, pkgdir)
 
-        with open(os.path.join(pkg, "index.html"), "a") as fp:
-            fp.write("</body></html> ")
+        pkg_dir_name = pkg_name
+        if option.normalize_package_names:
+            pkg_dir_name = normalize_pep503(pkg_dir_name)
+
+        pkg_dir = pkgdirpath("simple", pkg_dir_name)
+        if pkg_name not in processed_pkg:
+            with open(os.path.join(pkg_dir, "index.html"), "r+") as fp:
+                fp_content = fp.read()
+                fp.seek(0, 0)
+                fp_line = "<!DOCTYPE html><html><head><title>'%s'</title></head>\n" %(escape(pkg_name))
+                fp.write(fp_line + fp_content)
+
+            with open(os.path.join(pkg_dir, "index.html"), "a") as fp:
+                fp.write("</body></html> ")
+            processed_pkg.add(pkg_name)
 
     pkg_index += "</body></html>\n"
     if option.build_html:
