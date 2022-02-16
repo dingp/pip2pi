@@ -393,12 +393,21 @@ def _dir2pi(option, argv):
 
         if option.build_html:
             with open(os.path.join(pkg_dir, "index.html"), "a") as fp:
-                fp.write("<!DOCTYPE html><html><head><title>'%s'</title></head>" %(escape(pkg_name)))
-                fp.write("<body> <a href='%(name)s'>%(name)s</a><br /><body></html>\n" %{
+                fp.write("<a href='%(name)s'>%(name)s</a><br />\n" %{
                     "name": escape(pkg_basename),
                 })
-    pkg_index += "</body></html>\n"
 
+    for pkg in os.listdir(pkgdir+'/simple'):
+        with open(os.path.join(pkg, "index.html"), "r+") as fp:
+            fp_content = fp.read()
+            fp.seek(0, 0)
+            fp_line = "<!DOCTYPE html><html><head><title>'%s'</title></head>\n" %(escape(pkg_name))
+            fp.write(fp_line + fp_content)
+
+        with open(os.path.join(pkg, "index.html"), "a") as fp:
+            fp.write("</body></html> ")
+
+    pkg_index += "</body></html>\n"
     if option.build_html:
         with open(pkgdirpath("simple/index.html"), "w") as fp:
             fp.write(pkg_index)
